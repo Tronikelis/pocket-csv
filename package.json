@@ -10,13 +10,16 @@
       "require": "./dist/index.cjs"
     }
   },
+  "files": [
+    "./dist"
+  ],
   "scripts": {
     "test": "vitest"
   },
   "author": "Tronikelis",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Tronikelis/pocket-csv.git"
+    "url": "git+https://github.com/Tronikelis/pocket-csv.git"
   },
   "devDependencies": {},
   "dependencies": {}

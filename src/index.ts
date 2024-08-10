@@ -36,7 +36,7 @@ class Seeker {
   }
 }
 
-export default class PocketCSV {
+export class PocketCSV {
   private columns: string[];
   private rows: string[][];
 
@@ -74,6 +74,10 @@ export default class PocketCSV {
   addRow(row: string[]): this {
     this.rows.push(row.map(this.escapeValue));
     return this;
+  }
+
+  raw(): string[][] {
+    return [this.columns, ...this.rows];
   }
 
   toString(): string {
