@@ -1,7 +1,7 @@
 {
   "name": "pocket-csv",
   "type": "module",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "./dist/index.cjs",
   "types": "./dist/index.d.ts",
   "exports": {
@@ -14,7 +14,9 @@
     "./dist"
   ],
   "scripts": {
-    "test": "vitest"
+    "test": "vitest",
+    "build": "npx -y unbuild",
+    "pbl": "pnpm test run && pnpm build && npm publish"
   },
   "author": "Tronikelis",
   "repository": {
