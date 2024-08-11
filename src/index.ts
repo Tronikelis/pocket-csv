@@ -96,7 +96,7 @@ export class PocketCSV {
 }
 
 export function parseCSV(csv: string): string[][] {
-  csv = csv.replaceAll("\r\n", "\n").replaceAll("\r", "\n");
+  csv = csv.trim().replaceAll("\r\n", "\n").replaceAll("\r", "\n");
 
   const seeker = new Seeker(csv);
 
@@ -134,9 +134,13 @@ export function parseCSV(csv: string): string[][] {
         break;
 
       default: {
-        const tillComma = seeker.nextTill((char) =>
-          char === DELIMITER ? 0 : 1,
-        );
+        const tillComma = seeker.nextTill((char) => {
+          if (char === DELIMITER || char === "\n") {
+            return 0;
+          }
+
+          return 1;
+        });
 
         buf.push(next + tillComma);
         break;

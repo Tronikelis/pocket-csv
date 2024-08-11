@@ -1,7 +1,9 @@
 {
   "compilerOptions": {
+    "moduleResolution": "Bundler",
     "lib": [
-      "ESNext"
+      "ESNext",
+      "ES2021"
     ],
     "target": "ESNext",
     "strict": true,
