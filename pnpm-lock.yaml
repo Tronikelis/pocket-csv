@@ -6,10 +6,10 @@ settings:
 
 devDependencies:
   typescript:
-    specifier: ^5.5.4
+    specifier: 5.5.4
     version: 5.5.4
   vitest:
-    specifier: ^2.0.5
+    specifier: 2.0.5
     version: 2.0.5
 
 packages:
