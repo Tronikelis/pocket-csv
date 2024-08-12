@@ -18,7 +18,7 @@ describe("parseCSV", () => {
   });
 
   it("works with CRLF", () => {
-    input = "foo,bar\r\n,foobar,barfoo";
+    input = "foo,bar\r\nfoobar,barfoo";
     expect(parseCSV(input)).toEqual([
       ["foo", "bar"],
       ["foobar", "barfoo"],
@@ -49,6 +49,31 @@ describe("parseCSV", () => {
       ["foo", "bar"],
       ["foobar", "barfoo"],
     ]);
+  });
+
+  it("edge-cases", () => {
+    input = '"\n",,foo,"bar""n\n"';
+    expect(parseCSV(input)).toEqual([["\n", "", "foo", 'bar"n\n']]);
+  });
+
+  it("handles empty values", () => {
+    input = ",,,,";
+    expect(parseCSV(input)).toEqual([["", "", "", "", ""]]);
+
+    input = ",,,\n";
+    expect(parseCSV(input)).toEqual([["", "", "", ""]]);
+
+    input = "foo,bar,,";
+    expect(parseCSV(input)).toEqual([["foo", "bar", "", ""]]);
+
+    input = "foo,bar,,\n,,,";
+    expect(parseCSV(input)).toEqual([
+      ["foo", "bar", "", ""],
+      ["", "", "", ""],
+    ]);
+
+    input = '"\n",,';
+    expect(parseCSV(input)).toEqual([["\n", "", ""]]);
   });
 });
 

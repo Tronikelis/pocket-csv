@@ -1,41 +1,5 @@
 const DELIMITER = ",";
 
-class Seeker {
-  private pointer: number;
-  private str: string;
-
-  constructor(str: string) {
-    this.pointer = 0;
-    this.str = str;
-  }
-
-  next(): string | undefined {
-    return this.str[this.pointer++];
-  }
-
-  peekNext(offset = 0): string | undefined {
-    return this.str[this.pointer + offset];
-  }
-
-  nextTill(predicate: (char: string) => number): string {
-    let x: string | undefined;
-    let pr = 0;
-    let final = "";
-
-    while (!!(x = this.peekNext()) && (pr = predicate(x)) !== 0) {
-      for (let i = 0; i < pr; i++) {
-        final += this.next()!;
-      }
-    }
-
-    return final;
-  }
-
-  seek(plus: number) {
-    this.pointer += plus;
-  }
-}
-
 export class PocketCSV {
   private columns: string[];
   private rows: string[][];
@@ -95,6 +59,46 @@ export class PocketCSV {
   }
 }
 
+class Seeker {
+  private pointer: number;
+  private str: string;
+
+  constructor(str: string) {
+    this.pointer = 0;
+    this.str = str;
+  }
+
+  next(): string | undefined {
+    return this.str[this.pointer++];
+  }
+
+  peekNext(offset = 0): string | undefined {
+    return this.str[this.pointer + offset];
+  }
+
+  peekPrev(offset = 0): string | undefined {
+    return this.str[this.pointer - (offset + 1)];
+  }
+
+  nextTill(predicate: (char: string) => number): string {
+    let x: string | undefined;
+    let pr = 0;
+    let final = "";
+
+    while (!!(x = this.peekNext()) && (pr = predicate(x)) !== 0) {
+      for (let i = 0; i < pr; i++) {
+        final += this.next()!;
+      }
+    }
+
+    return final;
+  }
+
+  seek(plus: number) {
+    this.pointer += plus;
+  }
+}
+
 export function parseCSV(csv: string): string[][] {
   csv = csv.trim().replaceAll("\r\n", "\n").replaceAll("\r", "\n");
 
@@ -130,8 +134,20 @@ export function parseCSV(csv: string): string[][] {
         break;
       }
 
-      case DELIMITER:
+      case DELIMITER: {
+        // comma is first in line
+        const prev = seeker.peekPrev(1);
+        if (!prev || prev === "\n") {
+          buf.push("");
+        }
+
+        const next = seeker.peekNext();
+        if (!next || next === DELIMITER || next === "\n") {
+          buf.push("");
+        }
+
         break;
+      }
 
       default: {
         const tillComma = seeker.nextTill((char) => {
