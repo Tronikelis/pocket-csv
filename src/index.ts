@@ -99,7 +99,7 @@ class Seeker {
   }
 }
 
-export function parseCSV(csv: string): string[][] {
+export function parseCSV(csv: string, delimiter = DELIMITER): string[][] {
   csv = csv.trim().replaceAll("\r\n", "\n").replaceAll("\r", "\n");
 
   const seeker = new Seeker(csv);
@@ -134,7 +134,7 @@ export function parseCSV(csv: string): string[][] {
         break;
       }
 
-      case DELIMITER: {
+      case delimiter: {
         // comma is first in line
         const prev = seeker.peekPrev(1);
         if (!prev || prev === "\n") {
@@ -142,7 +142,7 @@ export function parseCSV(csv: string): string[][] {
         }
 
         const next = seeker.peekNext();
-        if (!next || next === DELIMITER || next === "\n") {
+        if (!next || next === delimiter || next === "\n") {
           buf.push("");
         }
 
@@ -151,7 +151,7 @@ export function parseCSV(csv: string): string[][] {
 
       default: {
         const tillComma = seeker.nextTill((char) => {
-          if (char === DELIMITER || char === "\n") {
+          if (char === delimiter || char === "\n") {
             return 0;
           }
 

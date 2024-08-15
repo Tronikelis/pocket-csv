@@ -9,6 +9,14 @@ describe("parseCSV", () => {
     expect(parseCSV(input)).toEqual([]);
   });
 
+  it("second argument is delimiter", () => {
+    input = "foo;bar";
+    expect(parseCSV(input, ";")).toEqual([["foo", "bar"]]);
+
+    input = '"foo"";";bar';
+    expect(parseCSV(input, ";")).toEqual([['foo";', "bar"]]);
+  });
+
   it("handles without quotes", () => {
     input = "foo,bar\nfoobar,barfoo";
     expect(parseCSV(input)).toEqual([
